@@ -12,8 +12,11 @@ export default function CompGetParam() {
         fetchData();
     }, []);
 
-    const handleProductDetail = (product) => {
-        console.log(product.pid);
+    const handleProductDetail = async (product) => {
+        const url = `http://localhost:9000/api/products/${product.pid}`;
+        const response = await fetch(url, {method : "GET"});
+        const jsonData = await response.json();
+        console.log(jsonData);
         
     }
 

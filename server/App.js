@@ -58,6 +58,10 @@ app.get("/api/products", (req, res, next) => {
     res.json({"products": products});
 });
 
+//pid 값이 파라미터로 전달
+app.get("/api/products/:pid", (req, res) => {  
+    res.json({ "pid": req.params.pid });
+});
 
 //5. 서버 시작
 app.listen(PORT, () => {
