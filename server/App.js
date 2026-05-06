@@ -66,10 +66,11 @@ app.get("/api/products/:pid", (req, res) => {
 
 //form 데이터 전송
 app.post("/api/post", (req, res) => {
-    console.log('form data :: ', req.body.formData);
-    res.json({"result" : true});
-    
+    console.log('form data::', req.body.formData);
+    res.json({"result": true});
 });
+
+
 
 //5. 서버 시작
 app.listen(PORT, () => {

@@ -1,23 +1,19 @@
 import React, {useState, useEffect} from 'react';
+import { getFetchData } from '../util/fetchDatas';
 
 export default function CompGetParam() {
     const [list, setList] = useState([]);
     useEffect(() => {
         const fetchData = async() => {
-            const url = "http://localhost:9000/api/products";
-            const response = await fetch(url, { method: "GET"});
-            const jsonData = await response.json();
+            const jsonData = await getFetchData('products');
             setList(jsonData.products);
         }
         fetchData();
     }, []);
 
     const handleProductDetail = async (product) => {
-        const url = `http://localhost:9000/api/products/${product.pid}`;
-        const response = await fetch(url, {method : "GET"});
-        const jsonData = await response.json();
+        const jsonData = await getFetchData(`products/${product.pid}`);
         console.log(jsonData);
-        
     }
 
     return (
