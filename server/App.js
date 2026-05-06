@@ -8,7 +8,7 @@ const PORT = 9000;
 const app = express();
 
 //3. 미들웨어 추가
-app.use(express.json());
+app.use(express.json()); //body로 넘어온 JSON 문자열 파싱
 app.use(express.urlencoded({extended: false}));
 app.use(cors());
 
@@ -60,7 +60,15 @@ app.get("/api/products", (req, res, next) => {
 
 //pid 값이 파라미터로 전달
 app.get("/api/products/:pid", (req, res) => {  
-    res.json({ "pid": req.params.pid });
+    // console.log(req.params.pid);
+    res.json({"result": `${req.params.pid}의 상세정보`});
+});
+
+//form 데이터 전송
+app.post("/api/post", (req, res) => {
+    console.log('form data :: ', req.body.formData);
+    res.json({"result" : true});
+    
 });
 
 //5. 서버 시작
