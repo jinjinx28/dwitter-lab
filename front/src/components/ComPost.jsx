@@ -12,28 +12,28 @@ export default function CompPost() {
         setForm({...form, [name]:value});
     }
 
-const handleFormSubmit = async (e) => {
-    e.preventDefault(); 
-    if(nameRef.current.value === '') {
-        alert('이름을 입력해주세요.');
-        nameRef.current.focus();
-    } else if(addressRef.current.value === '') {
-        alert('주소를 입력해주세요.');
-        addressRef.current.focus();
-    } else {
-        console.log('서버전송 -->> ', form);
-        // const url = "http://localhost:9000/api/post";
-        // const response = await fetch(url, {
-        //     method : "POST", 
-        //     headers : {'Content-type' : 'application/json'},
-        //     body : JSON.stringify({"formData" : form})
-        // });
-        const jsonData = await postFetchData('post', form);
-        console.log('result -->> ', jsonData.result);
-        jsonData.result? alert('등록 성공!!') : alert('등록 실패 💢💢');
-        
+    const handleFormSubmit = async (e) => {
+        e.preventDefault(); 
+        if(nameRef.current.value === '') {
+            alert('이름을 입력해주세요.');
+            nameRef.current.focus();
+        } else if(addressRef.current.value === '') {
+            alert('주소를 입력해주세요.');
+            addressRef.current.focus();
+        } else {
+            console.log('서버전송 -->> ', form);
+            // const url = "http://localhost:9000/api/post";
+            // const response = await fetch(url, {
+            //     method : "POST", 
+            //     headers : {'Content-type' : 'application/json'},
+            //     body : JSON.stringify({"formData" : form})
+            // });
+            const jsonData = await postFetchData('post', form);
+            console.log('result -->> ', jsonData.result);
+            jsonData.result? alert('등록 성공!!') : alert('등록 실패 💢💢');
+            
+        }
     }
-}
 
 
     return (
