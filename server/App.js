@@ -13,10 +13,13 @@ app.use(express.urlencoded({extended : false}));
 app.use(cors());
 
 // 4. 라우팅 
-//http://localhost:9000/
-app.get("/", (req, res, next) => {
-    // res.send("서버 실행 테스트!!");
-    res.json({"msg" : "서버 실행 테스트!!"});
+app.get("/api/get", (req, res, next) => {
+    const fruits = [
+        {"name" : "apple", "color" : "red", "emoji" : "🍎"},
+        {"name" : "lemon", "color" : "yellow", "emoji" : "🍋"},
+        {"name" : "melon", "color" : "green", "emoji" : "🍈"}
+    ]
+    res.json({"fruits" : fruits});
 });
 
 // 5. 서버 시작
