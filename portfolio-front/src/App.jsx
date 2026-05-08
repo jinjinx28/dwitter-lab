@@ -7,20 +7,13 @@ import { Outlet } from 'react-router-dom';
 
 export default function App() {
   const [like, setLike] = useState(0);
-  const [data, setData] = useState({});  
-  useEffect(()=>{
-    const loadData = async() => {
-      const response = await fetch("http://localhost:5173/data/portfolio.json");
-      const jsonData = await response.json();
-      setData(jsonData);
-    }
-    loadData();
-  }, []);
+  const [data, setData] = useState({}); 
+ 
   
   return (
     <>
       <Header />
-      <Outlet context={{ data: data?.content }}/> 
+      <Outlet /> 
       <Footer />
     </>
   )
