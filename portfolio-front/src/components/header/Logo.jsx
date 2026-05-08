@@ -10,7 +10,7 @@ export default function Logo({img, alt, style, title}) {
                     img={img}
                     alt={alt}
                     style={style} />
-            <h1 className="header-logo-title">{title}::SPA::Redux::❤({like})</h1>
+            <h1 className="header-logo-title">{title} Portfolio ❤({like})</h1>
             <p>skills::{skillsList.join(",")}</p>
         </div>
     )

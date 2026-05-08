@@ -2,42 +2,7 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/work/project/:pid', (req, res, next)=>{
-    console.log(req.params.pid);
-    
-});
-
-router.get('/testimonials', (req, res, next)=>{
-    const testimonials = [
-                {
-                    "img": "images/testimonials/people1.webp",
-                    "alt": "people1",
-                    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.Lorem ipsum, dolor sit amet consectetur adipisicing elit",
-                    "name": "James",
-                    "company": "Samsung"
-                },
-                {
-                    "img": "images/testimonials/people2.webp",
-                    "alt": "people2",
-                    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.Lorem ipsum, dolor sit amet consectetur adipisicing elit",
-                    "name": "Smith",
-                    "company": "Google"
-                },
-                {
-                    "img": "images/testimonials/people3.webp",
-                    "alt": "people3",
-                    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.Lorem ipsum, dolor sit amet consectetur adipisicing elit",
-                    "name": "Anne",
-                    "company": "Samsung"
-                }
-            ]
-    
-            res.json({"result": testimonials});
-});
-
-
-router.get('/work', (req, res, next)=>{
-    const work = {
+const work = {
             "categories" : [
                 {"category": "All", "count": "8"},
                 {"category": "Front-end", "count": "4"},
@@ -104,6 +69,43 @@ router.get('/work', (req, res, next)=>{
             ]
         }
 
+
+router.get('/work/project/:pid', (req, res, next)=>{
+    const pid = req.params.pid;
+    const project = work.projects.find(project => project.pid === pid);
+    res.json({"result": project});
+});
+
+router.get('/testimonials', (req, res, next)=>{
+    const testimonials = [
+                {
+                    "img": "images/testimonials/people1.webp",
+                    "alt": "people1",
+                    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.Lorem ipsum, dolor sit amet consectetur adipisicing elit",
+                    "name": "James",
+                    "company": "Samsung"
+                },
+                {
+                    "img": "images/testimonials/people2.webp",
+                    "alt": "people2",
+                    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.Lorem ipsum, dolor sit amet consectetur adipisicing elit",
+                    "name": "Smith",
+                    "company": "Google"
+                },
+                {
+                    "img": "images/testimonials/people3.webp",
+                    "alt": "people3",
+                    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.Lorem ipsum, dolor sit amet consectetur adipisicing elit",
+                    "name": "Anne",
+                    "company": "Samsung"
+                }
+            ]
+    
+            res.json({"result": testimonials});
+});
+
+
+router.get('/work', (req, res, next)=>{ 
         res.json({"result": work});
 });
 

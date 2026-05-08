@@ -10,9 +10,8 @@ export default function Projects({ projects }) {
     }
 
     const handleProjectDetail = async(pid) => {
-        // console.log(pid);  // http://localhost:9000/content/work/project/:pid
         const jsonData = await getFetchData(`/content/work/project/${pid}`);   
-        console.log(jsonData.result);  //project { pdd:"P001"...}             
+        setSelectedProject(jsonData.result);
     }
 
     return (
