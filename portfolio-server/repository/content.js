@@ -143,29 +143,28 @@ const testimonials = [
                 }
             ]
 
-const pid = req.params.pid;
-const project = work.projects.find(project => project.pid === pid);
-
-export const getHome = () => {
-    return home;
+export const getHome = (req, res) => {
+    res.json({ "result": home });
 }
 
-export const getAbout = () => {
-    return about;
+export const getAbout = (req, res) => {
+    res.json({ "result": about });
 }
 
-export const getSkills = () => {
-    return skills;
+export const getSkills = (req, res) => {
+    res.json({ "result": skills });
 }
 
-export const getWork = () => {
-    return work;
+export const getWork = (req, res) => {
+    res.json({ "result": work });
 }
 
-export const getTestimonials = () => {
-    return testimonials;
+export const getTestimonials = (req, res) => {
+    res.json({ "result": testimonials });
 }
 
-export const getProject = () => {
-    return project;
+export const getProject = (req, res) => {
+    const pid = req.params.pid;
+    const project = work.projects.find(project => project.pid === pid);
+    res.json({ "result": project });
 }
