@@ -1,4 +1,3 @@
-import { getWork } from '../../portfolio-server/repository/content';
 import * as repository from '../repository/content.js'
 
 export const getHome = (req, res, next) => {
