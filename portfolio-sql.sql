@@ -1,3 +1,4 @@
+show databases;
 use hrdb2019;
 select database();
 show tables;
@@ -14,6 +15,13 @@ create table portfolio(
     create_at		datetime
 );
 select * from portfolio;
+select header from portfolio;
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '여기에_님_비밀번호';
+FLUSH PRIVILEGES;
+
+select* from employee;
+select home from portfolio;
 
 insert into portfolio(header, home, about, skills, `work`, testimonials, footer, create_at)
 	values(
