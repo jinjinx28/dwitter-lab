@@ -1,5 +1,11 @@
 import pool from '../db.js';
 
+export const getDelete = async (id, user_id) => {
+    const sql = `DELETE FROM tweets WHERE id = ? AND user_id = ?`; 
+    const [result] = await pool.execute(sql, [id, user_id]);
+    return result.affectedRows; 
+}
+
 export const getUpdate = async(id, content, user_id) => {
     const sql = `UPDATE tweets SET content = ? WHERE id = ? and user_id = ? `;
     const [result] = await pool.execute(sql,[content, id, user_id]);
