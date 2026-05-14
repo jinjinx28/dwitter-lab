@@ -1,6 +1,7 @@
 import express from 'express';
 import pool from '../db.js';
 import authMiddleware from '../middleware/auth.middleware.js';
+import * as controller from '../controller/tweets.js';
 
 const router = express.Router();
 
@@ -33,19 +34,9 @@ router.get('/', async (req, res) => {
 /**
  * GET /api/tweets/my
  * 내 트윗 (인증 필요)
+ * 반드시!! 로그인 인증이 완료된 후 실행됨
  */
-router.get('/my', authMiddleware, async (req, res) => {
-  try {
-    const [rows] = await pool.query(
-      `${TWEET_SELECT} WHERE t.user_id = ? ORDER BY t.created_at DESC`,
-      [req.user.id]
-    );
-    res.json(rows);
-  } catch (err) {
-    console.error('[GET /tweets/my]', err);
-    res.status(500).json({ message: '서버 오류' });
-  }
-});
+router.get('/my', authMiddleware, controller.getMyTweets);
 
 /**
  * POST /api/tweets
