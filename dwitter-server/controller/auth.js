@@ -28,6 +28,7 @@ export const getAuth = async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('🔥 로그인 에러 상세:', error);
     res.status(500).json({ message: '서버 에러' });
   }
 };
