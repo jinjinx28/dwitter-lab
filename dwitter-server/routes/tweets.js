@@ -43,27 +43,7 @@ router.get('/my', authMiddleware, controller.getMyTweets);
  * POST /api/tweets
  * 트윗 작성 (인증 필요)
  */
-router.post('/', authMiddleware, async (req, res) => {
-  const { content } = req.body;
-  if (!content?.trim()) {
-    return res.status(400).json({ message: '내용을 입력하세요.' });
-  }
-
-  try {
-    const [result] = await pool.query(
-      'INSERT INTO tweets (user_id, content) VALUES (?, ?)',
-      [req.user.id, content.trim()]
-    );
-    const [rows] = await pool.query(
-      `${TWEET_SELECT} WHERE t.id = ?`,
-      [result.insertId]
-    );
-    res.status(201).json(rows[0]);
-  } catch (err) {
-    console.error('[POST /tweets]', err);
-    res.status(500).json({ message: '서버 오류' });
-  }
-});
+router.post('/', authMiddleware, controller.createMyTweet);
 
 /**
  * PUT /api/tweets/:id
@@ -75,21 +55,6 @@ router.put('/:id', authMiddleware, controller.getMyTweetsUpdate);
  * DELETE /api/tweets/:id
  * 트윗 삭제 (인증 + 본인만)
  */
-router.delete('/:id', authMiddleware, async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const [rows] = await pool.query('SELECT * FROM tweets WHERE id = ?', [id]);
-    if (!rows.length)        return res.status(404).json({ message: '트윗을 찾을 수 없습니다.' });
-    if (rows[0].user_id !== req.user.id)
-      return res.status(403).json({ message: '삭제 권한이 없습니다.' });
-
-    await pool.query('DELETE FROM tweets WHERE id = ?', [id]);
-    res.json({ message: '삭제되었습니다.' });
-  } catch (err) {
-    console.error('[DELETE /tweets/:id]', err);
-    res.status(500).json({ message: '서버 오류' });
-  }
-});
+router.delete('/:id', authMiddleware, controller.getMyTweetsDelete);
 
 export default router;
