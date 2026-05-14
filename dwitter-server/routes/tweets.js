@@ -1,36 +1,14 @@
 import express from 'express';
-import pool from '../db.js';
 import authMiddleware from '../middleware/auth.middleware.js';
 import * as controller from '../controller/tweets.js';
-import { getMyTweets } from '../repository/tweets.js';
 
 const router = express.Router();
-
-const TWEET_SELECT = `
-  SELECT
-    t.id,
-    t.content,
-    t.created_at,
-    u.id       AS user_id,
-    u.username,
-    u.avatar_url
-  FROM tweets t
-  JOIN users u ON t.user_id = u.id
-`;
 
 /**
  * GET /api/tweets
  * 전체 트윗 (최신순)
  */
-router.get('/', async (req, res) => {
-  try {
-    const [rows] = await pool.query(`${TWEET_SELECT} ORDER BY t.created_at DESC`);
-    res.json(rows);
-  } catch (err) {
-    console.error('[GET /tweets]', err);
-    res.status(500).json({ message: '서버 오류' });
-  }
-});
+router.get('/', controller.getAll);
 
 /**
  * GET /api/tweets/my

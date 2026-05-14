@@ -1,9 +1,19 @@
 import * as repository from '../repository/tweets.js';
 
+/* getAll */
+export const getAll = async (req, res) => {
+    try {
+        const rows = await repository.getAll();
+        console.log(rows);
+        
+        res.json(rows);
+    } catch (err) {
+        console.error('[GET /tweets]', err);
+        res.status(500).json({ message: '서버 오류' });
+    }
+}
 
-/**
- * MyTweet Create
- */
+/* MyTweet Create */
 export const createMyTweet = async (req, res) => {
     const { content } = req.body;
 
@@ -19,9 +29,7 @@ export const createMyTweet = async (req, res) => {
 }
 
 
-/**
- * MyTweet Delete
- */
+/* MyTweet Delete */
 export const getMyTweetsDelete = async (req, res) => {
     const { id } = req.params;
     
@@ -35,9 +43,7 @@ export const getMyTweetsDelete = async (req, res) => {
 }
 
 
-/**
- * MyTweets Update
- */
+/* MyTweets Update */
 export const getMyTweetsUpdate = async (req, res) => {
     const { id } = req.params;
     const { content } = req.body;
@@ -55,9 +61,7 @@ export const getMyTweetsUpdate = async (req, res) => {
 
 
 
-/**
- * MyTweets
- */
+/* MyTweets */
 export const getMyTweets = async (req, res) => {
     try {
         const rows = await repository.getMyTweets(req.user.id);        

@@ -1,18 +1,17 @@
 import pool from '../db.js';
 
+export const getAll = async() => {
+    const sql = `
+        select * from tweets_view
+            order by created_at desc;
+    `;
+    const [rows] = await pool.execute(sql, []);
+    return rows;
+}
 
 export const getTweet = async(id) => {
     const sql = `
-        SELECT
-            t.id,
-            t.content,
-            t.created_at,
-            u.id       AS user_id,
-            u.username,
-            u.avatar_url
-        FROM tweets t
-        INNER JOIN users u ON t.user_id = u.id
-        WHERE t.id = ?
+        select * from where id = ?
     `;
     const [result] = await pool.execute(sql, [id]);
     return result[0];
@@ -42,16 +41,8 @@ export const getUpdate = async(id, content, user_id) => {
 
 export const getMyTweets = async(id) => {
     const sql = `
-        SELECT
-            t.id,
-            t.content,
-            t.created_at,
-            u.id AS user_id,
-            u.username,
-            u.avatar_url
-        FROM tweets t
-        INNER JOIN users u ON t.user_id = u.id
-        WHERE t.user_id = ? ORDER BY t.created_at DESC    
+        select * from tweets_view
+            WHERE user_id = ? ORDER BY created_at DESC        
     `;
     const [rows] = await pool.execute(sql, [id]);
     

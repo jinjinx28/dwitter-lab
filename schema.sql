@@ -46,6 +46,42 @@ select * from tweets;
 
 SELECT count(username) FROM users 
 	WHERE username ='user1';
+    
+select * from users;
+
+select 
+	t.id,
+    t.content,
+    t.created_at,
+    u.id as user_id,
+    u.username,
+    u.avatar_url
+from tweets t
+join users u on t.user_id = u.id
+where t.user_id = 1 order by t.created_at desc;
+
+select * from tweets;
+
+-- 
+SELECT
+	t.id,
+	t.content,
+	t.created_at,
+	u.id       AS user_id,
+	u.username,
+	u.avatar_url
+FROM tweets t
+INNER JOIN users u ON t.user_id = u.id;
+
+select count(*) from tweets;
+
+
+
+
+
+
+
+
 
 
 
