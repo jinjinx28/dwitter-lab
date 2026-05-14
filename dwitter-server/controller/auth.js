@@ -5,18 +5,19 @@ import * as repository from "../repository/auth.js";
 
 dotenv.config();
 
-/**
- * 로그인
- */
 export const getLogin = async (req, res) => {
   const { username, password } = req.body;
   
   try {
     const user = await repository.getLogin(username);
-    const valid = await bcrypt.compare(password, user.password);
-console.log(user, valid, !user.count, !valid);
     
-    if(!user.count || !valid) {
+    if(!user || !user.id) {
+      return res.status(401).json({ message: '아이디 또는 비밀번호가 틀렸습니다.' });
+    }
+
+    const valid = await bcrypt.compare(password, user.password);
+    
+    if(!valid) {
       return res.status(401).json({ message: '아이디 또는 비밀번호가 틀렸습니다.' });
     } 
     
@@ -25,30 +26,27 @@ console.log(user, valid, !user.count, !valid);
       username: user.username 
     }, process.env.JWT_SECRET, { expiresIn: '7d' });
     
-    // console.log(token, user);
-        
-    res.json({  token, 
-                user: { id: user.id, 
-                        username: user.username, 
-                        profileImage: user.avatar_url 
-              } });
-  } catch {
+    res.json({ 
+      token, 
+      user: { 
+        id: user.id, 
+        username: user.username, 
+        profileImage: user.avatar_url 
+      } 
+    });
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: '서버 오류' });
   }
 }
 
-
-/**
- * 회원가입
- */
 export const getAuth = async (req, res) => {
-  const SECRET = process.env.JWT_SECRET; // .env에서 불러오기
+  const SECRET = process.env.JWT_SECRET;
   const { userName, password, profileImage } = req.body;
 
   try {
-    //패스워드 암호화
-    const hashed = await bcrypt.hash(req.body.password, 10);
-      const result = await repository.signUp({
+    const hashed = await bcrypt.hash(password, 10);
+    const result = await repository.signUp({
       userName,
       password: hashed,
       profileImage,
@@ -58,7 +56,9 @@ export const getAuth = async (req, res) => {
       expiresIn: "7d",
     });
     res.status(201).json({ token, user: { id: result.insertId, userName } });
+    
   } catch (err) {
+    console.error(err);
     if (err.code === "ER_DUP_ENTRY")
       return res.status(409).json({ message: "이미 사용 중인 아이디입니다." });
     res.status(500).json({ message: "서버 오류" });

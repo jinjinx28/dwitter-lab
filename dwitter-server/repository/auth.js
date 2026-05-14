@@ -1,8 +1,5 @@
 import pool from "../db.js";
 
-/**
- * 로그인
- */
 export const getLogin = async(username) => {
   const sql = `
         select  count(username) as count,
@@ -14,14 +11,9 @@ export const getLogin = async(username) => {
         where username=?
   `;
   const [rows] = await pool.execute(sql, [username, username, username, username, username]);
-  return rows[0];  //{ count:1, password:...}
+  return rows[0];
 }
 
-
-
-/**
- * 회원가입
- */
 export const signUp = async (userData) => {
   const { userName, password, profileImage } = userData;
 
