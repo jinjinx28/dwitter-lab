@@ -2,26 +2,32 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import * as repository from "../repository/signUp.js";
 
+const SECRET = 'YOUR_SECRET_KEY'; 
+
 export const getAuth = async (req, res) => {
-  const SECRET = process.env.JWT_SECRET; // .env에서 불러오기
-  const { userName, password, profileImage } = req.body;
-
+  const { username, password } = req.body;
   try {
-    //패스워드 암호화
-    const hashed = await bcrypt.hash(req.body.password, 10);
-      const result = await repository.signUp({
-      userName,
-      password: hashed,
-      profileImage,
-    });
+    const user = await repository.getLogin(username);
+    const valid = user.count && await bcrypt.compare(password, user.password);
 
-    const token = jwt.sign({ id: result.insertId, userName }, SECRET, {
-      expiresIn: "7d",
+    if (!user.count || !valid) {
+      return res.status(401).json({ message: '아이디 또는 비밀번호가 틀렸습니다.' });
+    }
+
+    const token = jwt.sign({
+      id: user.id,
+      username: user.username
+    }, SECRET, { expiresIn: '7d' });
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        profileImage: user.avatar_url
+      }
     });
-    res.status(201).json({ token, user: { id: result.insertId, userName } });
-  } catch (err) {
-    if (err.code === "ER_DUP_ENTRY")
-      return res.status(409).json({ message: "이미 사용 중인 아이디입니다." });
-    res.status(500).json({ message: "서버 오류" });
+  } catch (error) {
+    res.status(500).json({ message: '서버 에러' });
   }
 };
