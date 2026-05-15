@@ -77,6 +77,8 @@ export default function Register() {
         const data = await res.json();
         profileImage = data.filename;
       }
+      console.log('업로드 이미지 -->>', profileImage);
+      
 
       // ✅ 2단계: 실제 서버 회원가입 API 호출
       const data = await authAPI.register({ ...form, profileImage });
